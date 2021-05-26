@@ -1,0 +1,32 @@
+{{define "tpl/patientQueue.tmpl"}}
+    <div style="overflow: scroll;max-height: 800px;">
+    <table class="table table-striped">
+        <thead>
+        <th>姓名</th>
+        <th>性别</th>
+        <th>年龄</th>
+        <th>手机</th>
+        <th>诊断</th>
+        </thead>
+        <tbody>
+        {{range .}}
+        <tr class="warning tuo" draggable="true">
+            <td>{{.Name}}</td>
+            <td>{{.Sex}}</td>
+            <td>{{.Age}}</td>
+            <td>{{.Tel}}</td>
+            <td>{{.Disease}}</td>
+        </tr>
+        {{else}}
+            <tr class="warning tuo" draggable="true">
+                <td>{{.Name}}</td>
+                <td>{{.Sex}}</td>
+                <td>{{.Age}}</td>
+                <td>{{.Tel}}</td>
+                <td>{{.Disease}}</td>
+            </tr>
+        {{end}}
+        </tbody>
+    </table>
+    </div>
+{{end}}

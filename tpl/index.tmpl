@@ -1,0 +1,152 @@
+{{define "tpl/index.tmpl"}}
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="utf-8" />
+		<title>安医demo</title>
+		<link rel="stylesheet" type="text/css" href="/static/bootstrap-3.4.1-dist/css/bootstrap.min.css"/>
+		<link rel="stylesheet" href="/static/bootstrap-3.4.1-dist/css/chuangkou.css">
+		<script type="text/javascript" src="/static/bootstrap-3.4.1-dist/js/index.js"></script>
+	</head>
+	<body>
+		<div class="container-fluid">
+			<div class="row" style="background-color: #4CAE4C; height: 85px;">
+				<div class="col-md-4" style="color: white;">
+					<h3>医院床位管理系统</h3>
+					<h6>Bed Information Arangement System</h6>
+				</div>
+				
+				<div class="col-md-2 col-md-offset-4" style="color: white;">
+					<h3>床位信息</h3>
+				</div>
+
+				<div class="col-md-2" style="color: white;">
+					<h3>数据汇总</h3>
+				</div>
+			</div>
+			
+			<div class="row" style="height: 700px;">
+				<div class="col-md-3" style="background-color: whitesmoke;">
+					<div class="row" style="height: 700px;">
+						<button type="button" onclick="f()" class="btn btn-default" style="width: 100%;">添加病人</button>
+						<form action="/index/query" method="POST">
+							<div class="input-group">
+								<input name="tel" type="text" class="form-control" placeholder="Search for...">
+								<span class="input-group-btn">
+						        <button class="btn btn-default">Go!</button>
+						      </span>
+							</div><!-- /input-group -->
+						</form>
+
+						{{template "tpl/patientQueue.tmpl" .Patient}}
+					</div>
+				</div>
+				<div class="col-md-9" id="dropbox">
+					<h2>床位信息一览</h2>
+					{{template "tpl/bedList.tmpl" .Bed}}
+				</div>
+
+			</div>
+		</div>
+		<div class="zhe" id="flag">
+			<div class="chu">
+				<div class="area">
+					<form action="/index/addpatient" method="POST">
+						<div class="item">
+							<input name="xingming" type="text" placeholder="姓名">
+						</div>
+						<div class="item">
+							<input name="xingbie" type="text" placeholder="性别">
+						</div>
+						<div class="item">
+							<input name="nianling" type="text" placeholder="年龄">
+						</div>
+						<div class="item">
+							<input name="shouji" type="text" placeholder="手机">
+						</div>
+						<div class="item">
+							<input name="zhenduan" type="text" placeholder="诊断">
+						</div>
+						<div class="item1">
+							<button class="an">提交</button>
+							<button class="fqx() an">取消</button>
+						</div>
+					</form>
+				</div>
+			</div>
+		</div>
+
+		<script>
+			//拖拽功能实现
+			var ali=document.getElementsByClassName("tuo");
+			var obj={};
+			var ob={}
+			for(var j=0;j<ali.length;j++)
+			{
+				if(!ob[j])
+				{
+					ali[j].ondragstart=function(e)
+					{
+						this.style.border='2px solid #38ee2c';
+						this.style.opacity=0.5;
+						var al=this.getElementsByTagName('td');
+						e.dataTransfer.setData('xingming',al[0].innerHTML);
+						e.dataTransfer.setData('xingbie',al[1].innerHTML);
+						e.dataTransfer.setData('nianling',al[2].innerHTML);
+						e.dataTransfer.setData('shouji',al[3].innerHTML);
+						e.dataTransfer.setData('zhenduan',al[4].innerHTML);
+					}
+					ali[j].ondragend=function()
+					{
+						this.style.border='none';
+					}
+					ob[j]=1;
+				}
+			}
+			//目标位置
+			var pu=document.getElementsByClassName("col-md-2");
+			for(var i=2;i<pu.length;i++)
+			{
+				if(!obj[i])
+				{
+					pu[i].ondragover=function(e)
+					{
+						e.preventDefault();
+						// if(obj[i])
+						// this.style.border='none';
+					}
+					pu[i].ondrop=function(e)
+					{
+						var ming =e.dataTransfer.getData('xingming');
+						var bie =e.dataTransfer.getData('xingbie');
+						var ling =e.dataTransfer.getData('nianling');
+						var shou =e.dataTransfer.getData('shouji');
+						var zhen =e.dataTransfer.getData('zhenduan');
+						var op=document.createElement('p');
+						var pp=document.createElement('p');
+						op.className='p1';
+						pp.innerHTML=ming;
+						op.appendChild(pp);
+						var pp=document.createElement('p');
+						pp.innerHTML=bie;
+						op.appendChild(pp);
+						var pp=document.createElement('p');
+						pp.innerHTML=ling;
+						op.appendChild(pp);
+						var pp=document.createElement('p');
+						pp.innerHTML=shou;
+						op.appendChild(pp);
+						var pp=document.createElement('p');
+						pp.innerHTML=zhen;
+						op.appendChild(pp);
+						e.target.appendChild(op);
+						obj[i]=1;
+						this.style.border='none';
+					}
+				}
+			}
+		</script>
+
+	</body>
+</html>
+{{end}}
